@@ -65,3 +65,141 @@ let callStringWithClosureThree = { () in
 let callStringWithClosureFour = {"Hello, I'm a closure" }
 
 callStringWithClosureFour()
+
+// **************************************************************
+// **************************************************************
+
+
+/*
+    Problem: Can you pass/return a funcion/functions to a function?
+ */
+
+// Note: Function = Global Closure
+
+func hello() -> String {
+    return "hello"
+}
+
+hello // () -> String
+
+var addWithClosures: (Int, Int) -> Int = { (number1: Int, number2: Int) -> Int in
+        return number1 + number2
+}
+
+var returnString: () -> String = { () in
+    return "hello"
+}
+
+var minusWithClosure: (Int, Int, Int) -> Double = { (num1:Int, num2: Int, num3: Int) -> Double in
+    return Double(num1 + num2 + num3)
+}
+
+
+/*
+    *** Return Closure ***
+    Return Closure Indirectly
+ */
+
+func returnClosure() -> ((Int, Int) -> Int) {
+    return addWithClosures
+}
+
+let returnedClosure = returnClosure()
+returnedClosure(10, 10)
+returnClosure()(10, 10)
+
+// Return Closure Directly
+
+// Practices
+func returnClosureDirectly () -> ((Int, Int, Int) -> Double) {
+    return { (num1: Int, num2: Int, num3: Int) -> Double in
+        return Double(num1 + num2 + num3)
+        
+    }
+}
+
+func returnClosureDirectlyLess() -> ((Int, Int, Int) -> Double) {
+    return { (num1, num2, num3) in
+        Double(num1 + num2 + num3)
+    }
+}
+
+func returnClosureDirectlyMoreLess() -> ((Int, Int, Int) -> Double) {
+    return {
+        Double($0 + $1 + $2)
+    }
+}
+
+
+func  getClosure() -> ((Int, Int) -> Int) {
+    return { (number1: Int, number2: Int) -> Int in
+        return number1 + number2
+    }
+}
+
+func getClosureLess() -> ((Int, Int) -> Int) {
+    return { (num1, num2) in
+        return num1 + num2
+    }
+}
+
+func getClosureMoreLess() -> ((Int, Int) -> Int) {
+    return {
+        $0 + $1
+    }
+}
+
+func getClosure() -> ((String) -> String) {
+    return { (variable: String) -> String in
+        return variable
+    }
+}
+
+func getClosureLess() -> ((String) -> String) {
+    return { (variable) in
+        return variable
+    }
+}
+
+func getClosureMoreLess() -> ((String) -> String) {
+    return {
+        $0
+    }
+}
+
+getClosure()(20,20)
+getClosure()("Samet")
+returnClosureDirectly()(10,10,10)
+
+let closureParam = returnClosureDirectly()
+closureParam(10,10,10)
+let closureParam2: ((Int, Int) -> Int) = getClosure()
+closureParam2(10,20)
+
+
+//: Pass Closure
+func insertClosureBlock(closureBlock: () -> String) -> String {
+    return closureBlock()
+}
+
+//: Pass Closure Indirectly
+insertClosureBlock(closureBlock: hello)
+
+let returnValue = insertClosureBlock(closureBlock: returnString)
+insertClosureBlock(closureBlock: hello)
+
+//: Pass Closure Directly
+insertClosureBlock { () in
+    return "Samet"
+}
+
+insertClosureBlock {
+    return "Samet"
+}
+
+insertClosureBlock {
+    "Samet"
+}
+
+let example = Array(1...200).filter{ $0 % 2 == 0}
+print(example)
